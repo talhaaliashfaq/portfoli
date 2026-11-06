@@ -125,7 +125,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 $$("img[data-same]").forEach(i=>{i.src=$(".portrait img").src});
 const PDF="./taashfaq_cv.pdf";
 let tt;const toast=(m,btn)=>{const t=$("#toast");t.innerHTML=m;if(btn){const b=document.createElement("button");b.textContent=btn[0];b.onclick=btn[1];t.appendChild(b)}t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),btn?9000:4500)};
-async function dlcv(){
+async function dlCV(){
   let b;
   try{
     const r=await fetch(PDF);
@@ -138,13 +138,23 @@ async function dlcv(){
   }
   try{
     const u=URL.createObjectURL(b),a=document.createElement("a");
-    a.href=u;a.download="Talha_Ali_Ashfaq_CV.pdf";
+    a.href=u;a.download="taashfaq_cv.pdf";
     document.body.appendChild(a);a.click();a.remove();
     toast("Download ready.");
-  }catch(e){}
-}$$(".dl").forEach(b=>b.addEventListener("click",ev=>{ev.preventDefault();dlCV()}));
-$("#vr").onclick=()=>{const r=$("#rpg");if(!r.firstChild)PG.forEach(s=>{const i=new Image();i.src=s;i.alt="Resume page of Talha Ali Ashfaq";i.onerror=()=>{r.innerHTML="<p style='color:#fff'>Preview unavailable. Use Download PDF.</p>"};r.appendChild(i)});$("#rd").showModal()};$("#rx").onclick=()=>{$("#rd").close()};
-const EM="taashfaq00@gmail.com";const copyEm=()=>{const ok=()=>toast("Email address copied.");try{navigator.clipboard.writeText(EM).then(ok,()=>{fb()})}catch(e){fb()}function fb(){try{const t=document.createElement("textarea");t.value=EM;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();ok()}catch(e){toast("Copy manually: <b>"+EM+"</b>")}}};
+  }catch(e){
+    window.open(PDF,"_blank");
+  }
+}
+
+$$(".dl").forEach(b=>b.addEventListener("click",ev=>{ev.preventDefault();dlCV();}));
+
+$("#vr").onclick = () => {
+  const r = $("#rpg");
+  r.innerHTML = `<iframe src="${PDF}" style="width:100%; height:70vh; border:none; border-radius:8px;"></iframe>`;
+  $("#rd").showModal();
+};
+
+$("#rx").onclick = () => { $("#rd").close(); };const EM="taashfaq00@gmail.com";const copyEm=()=>{const ok=()=>toast("Email address copied.");try{navigator.clipboard.writeText(EM).then(ok,()=>{fb()})}catch(e){fb()}function fb(){try{const t=document.createElement("textarea");t.value=EM;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();ok()}catch(e){toast("Copy manually: <b>"+EM+"</b>")}}};
 $$(".gm").forEach(a=>a.addEventListener("click",()=>{setTimeout(()=>{if(!document.hidden&&document.hasFocus())toast("No email app opened? Write to <b>"+EM+"</b>",["Copy",copyEm])},1200)}));
 $("#bg").onclick=()=>{const o=$("#lk").classList.toggle("open");$("#bg").setAttribute("aria-expanded",o)};$$("#lk a").forEach(a=>a.onclick=()=>{$("#lk").classList.remove("open")});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});$$(".rv").forEach(e=>io.observe(e));setTimeout(()=>$$(".rv").forEach(e=>e.classList.add("in")),5000);
