@@ -125,10 +125,24 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 $$("img[data-same]").forEach(i=>{i.src=$(".portrait img").src});
 const PDF="./taashfaq_cv.pdf";
 let tt;const toast=(m,btn)=>{const t=$("#toast");t.innerHTML=m;if(btn){const b=document.createElement("button");b.textContent=btn[0];b.onclick=btn[1];t.appendChild(b)}t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),btn?9000:4500)};
-async function dlCV(){let b;try{const r=await fetch(PDF);if(!r.ok)throw 0;b=await r.blob()}catch(e){window.open(PDF,"_blank");toast("Opening the PDF in a new tab. Save it from there.");return}
-try{const d=await claude.use("downloads");if(d){await d.save({filename:"Talha_Ali_Ashfaq_CV.pdf",data:b});toast("Resume download ready.");return}}catch(e){if(e&&/reject|cancel|declin/i.test(e.code+e.message)){toast("Download cancelled.");return}}
-try{const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="Talha_Ali_Ashfaq_CV.pdf";document.body.appendChild(a);a.click();a.remove();toast("Download started. If nothing happened, open this page in its own browser tab.")}catch(e){window.open(PDF,"_blank")}}
-$$(".dl").forEach(b=>b.addEventListener("click",ev=>{ev.preventDefault();dlCV()}));
+async function dlcv(){
+  let b;
+  try{
+    const r=await fetch(PDF);
+    if(!r.ok)throw 0;
+    b=await r.blob();
+  }catch(e){
+    window.open(PDF,"_blank");
+    toast("Opening the PDF in a new tab. Save it from there.");
+    return;
+  }
+  try{
+    const u=URL.createObjectURL(b),a=document.createElement("a");
+    a.href=u;a.download="Talha_Ali_Ashfaq_CV.pdf";
+    document.body.appendChild(a);a.click();a.remove();
+    toast("Download ready.");
+  }catch(e){}
+}$$(".dl").forEach(b=>b.addEventListener("click",ev=>{ev.preventDefault();dlCV()}));
 $("#vr").onclick=()=>{const r=$("#rpg");if(!r.firstChild)PG.forEach(s=>{const i=new Image();i.src=s;i.alt="Resume page of Talha Ali Ashfaq";i.onerror=()=>{r.innerHTML="<p style='color:#fff'>Preview unavailable. Use Download PDF.</p>"};r.appendChild(i)});$("#rd").showModal()};$("#rx").onclick=()=>{$("#rd").close()};
 const EM="taashfaq00@gmail.com";const copyEm=()=>{const ok=()=>toast("Email address copied.");try{navigator.clipboard.writeText(EM).then(ok,()=>{fb()})}catch(e){fb()}function fb(){try{const t=document.createElement("textarea");t.value=EM;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();ok()}catch(e){toast("Copy manually: <b>"+EM+"</b>")}}};
 $$(".gm").forEach(a=>a.addEventListener("click",()=>{setTimeout(()=>{if(!document.hidden&&document.hasFocus())toast("No email app opened? Write to <b>"+EM+"</b>",["Copy",copyEm])},1200)}));
